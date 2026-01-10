@@ -1,9 +1,18 @@
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { Menu } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useLogin } from '@/hooks/useLogin'
 
 export function Navbar() {
+  const { logout, isLoggingOut } = useLogin()
+  const navigate = useNavigate()
+
+  const handleLogout = async () => {
+    await logout()
+    navigate('/login')
+  }
+
   return (
     <header className="bg-background sticky top-0 z-50 w-full border-b">
       <div className="mx-auto flex h-16 items-center px-4">
@@ -18,6 +27,14 @@ export function Navbar() {
             <Link className="hover:text-primary text-sm font-medium" to="/">
               Home
             </Link>
+            <button
+              onClick={handleLogout}
+              disabled={isLoggingOut}
+              className="hover:text-primary text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              aria-label="Logout"
+            >
+              Logout
+            </button>
           </nav>
         </div>
 
@@ -45,6 +62,14 @@ export function Navbar() {
                 <Link to="/" className="text-lg">
                   Home
                 </Link>
+                <button
+                  onClick={handleLogout}
+                  disabled={isLoggingOut}
+                  className="text-left text-lg hover:text-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                  aria-label="Logout"
+                >
+                  Logout
+                </button>
               </nav>
             </SheetContent>
           </Sheet>

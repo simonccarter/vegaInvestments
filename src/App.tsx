@@ -1,11 +1,8 @@
 import { Navbar } from '@/components/layout/navbar'
-import { appRoutes } from '@/routes/app-routes'
-import { useRoutes } from 'react-router-dom'
+import { AppRoutes } from '@/routes/app-routes'
 import './App.css'
 
 function App() {
-  const routeElements = useRoutes(appRoutes)
-
   return (
     <div className="flex min-h-screen flex-col">
       {/* Skip to main content link for screen readers */}
@@ -17,7 +14,7 @@ function App() {
       </a>
       <Navbar />
       <main id="main-content" className="mx-auto w-full max-w-7xl" tabIndex={-1}>
-        {routeElements}
+        <AppRoutes />
       </main>
     </div>
   )
