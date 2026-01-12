@@ -1,7 +1,7 @@
 import { useGetPortfolios } from '@/api/vega/usePortfolios'
 import { useGetAssets } from '@/api/vega/useAssets'
 import { Loader } from '@/components/ui/loader'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 import { transformPortfolioData } from './transformer'
 import { PieChartTooltip } from './components/PieChartTooltip/PieChartTooltip'
@@ -88,8 +88,10 @@ export default function PortfolioChart() {
 
   return (
       <Card className="bg-muted/40">
+        <CardHeader>
+          <CardTitle>Portfolio</CardTitle>
+        </CardHeader>
         <CardContent className="p-4">
-          <h2 className="mb-2 text-lg font-semibold">Portfolio Distribution</h2>
           <div className="sr-only" id="chart-description">
             {chartDescription}
           </div>
@@ -123,11 +125,6 @@ export default function PortfolioChart() {
                 <Legend />
               </PieChart>
             </ResponsiveContainer>
-          </div>
-
-          <div className="mt-4 text-sm text-muted-foreground">
-            <p>Total Portfolio Value: ${totalValue.toFixed(2)}</p>
-            <p>As of: {new Date(data.asOf).toLocaleString()}</p>
           </div>
         </CardContent>
       </Card>

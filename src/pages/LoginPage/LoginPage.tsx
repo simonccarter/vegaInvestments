@@ -20,8 +20,6 @@ export function LoginPage() {
     const email = formData.get('email') as string
     const password = formData.get('password') as string
 
-    console.log('email', email)
-    console.log('password', password)
     const isLoggedIn = await login({ email, password })
     if (isLoggedIn) {
       return navigate('/')
@@ -37,23 +35,22 @@ export function LoginPage() {
           <CardContent className="p-6 space-y-6">
             <h1 className="text-2xl font-semibold text-center">Login</h1>
             <form className="space-y-4" onSubmit={handleLogin}>
-
-          {authError && <div className="text-red-500">{authError}</div>}
-          {isLoggingIn && <Loader className="animate-spin" size={20} />}
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input type="email" id="email" name="email" placeholder="Enter your email" />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input type="password" id="password" name="password" placeholder="Enter your password" />
-            </div>
-            <Button type="submit" className="w-full" disabled={isLoggingIn}>
-              Sign In
-            </Button>
-            <p>Demo hardcoded details</p>
-            <p>email: demo@example.com, password: 123456</p>
-          </form>
+              {authError && <div className="text-red-500">{authError}</div>}
+              {isLoggingIn && <Loader size={20} />}
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input type="email" id="email" name="email" placeholder="Enter your email" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input type="password" id="password" name="password" placeholder="Enter your password" />
+              </div>
+              <Button type="submit" className="w-full" disabled={isLoggingIn}>
+                Sign In
+              </Button>
+              <p>Demo hardcoded details</p>
+              <p>email: demo@example.com, password: 123456</p>
+            </form>
           </CardContent>
         </Card>
       </div>

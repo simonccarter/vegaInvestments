@@ -2,7 +2,7 @@ import { useGetPortfolios } from '@/api/vega/usePortfolios'
 import { useGetAssets } from '@/api/vega/useAssets'
 import { type Position } from '@/api/vega/schemas'
 import { Loader } from '@/components/ui/loader'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -165,8 +165,10 @@ export default function PositionsTable() {
 
   return (
       <Card className="bg-muted/40">
+        <CardHeader>
+          <CardTitle>Positions</CardTitle>
+        </CardHeader>
         <CardContent className="p-4">
-          <h2 className="mb-4 text-lg font-semibold">Positions</h2>
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (

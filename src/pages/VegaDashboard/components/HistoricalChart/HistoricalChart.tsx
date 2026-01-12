@@ -3,7 +3,7 @@ import { useGetAssets } from '@/api/vega/useAssets'
 import { useGetPrices } from '@/api/vega/usePrices'
 import { Loader } from '@/components/ui/loader'
 import { DateRangePicker } from '@/components/ui/date-range-picker'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardAction } from '@/components/ui/card'
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid, Legend } from 'recharts'
 import { useMemo, useState } from 'react'
 import type { DateRange } from 'react-day-picker'
@@ -122,9 +122,9 @@ export default function HistoricalChart() {
 
   return (
       <Card className="bg-muted/40">
-        <CardContent className="p-4">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Portfolio Historical Performance</h2>
+        <CardHeader>
+          <CardTitle>Portfolio Historical Performance</CardTitle>
+          <CardAction>
             <div className="w-64">
               <DateRangePicker
                 value={dateRange}
@@ -132,7 +132,9 @@ export default function HistoricalChart() {
                 maxDate={new Date()}
               />
             </div>
-          </div>
+          </CardAction>
+        </CardHeader>
+        <CardContent className="p-4">
 
           {isLoadingPrices ? (
             <div className="flex h-96 items-center justify-center">
@@ -177,19 +179,6 @@ export default function HistoricalChart() {
                   />
                 </LineChart>
               </ResponsiveContainer>
-            </div>
-          )}
-
-          {chartData.length > 0 && (
-            <div className="mt-4 text-sm text-muted-foreground">
-              <p>
-                Value Range: ${Math.min(...chartData.map(d => d.value)).toFixed(2)} - ${Math.max(...chartData.map(d => d.value)).toFixed(2)}
-              </p>
-              {dateRange?.from && dateRange?.to && (
-                <p>
-                  Period: {format(dateRange.from, 'MMM dd, yyyy')} to {format(dateRange.to, 'MMM dd, yyyy')}
-                </p>
-              )}
             </div>
           )}
         </CardContent>
