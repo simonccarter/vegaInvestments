@@ -1,4 +1,5 @@
 import { useGetPortfolios } from '@/api/vega/usePortfolios'
+import { useGetAssets } from '@/api/vega/useAssets'
 import { type Position } from '@/api/vega/schemas'
 import { Container } from '@/components/ui/container'
 import { Loader } from '@/components/ui/loader'
@@ -21,6 +22,17 @@ import { useMemo } from 'react'
 
 export default function PositionsTable() {
   const { data, isLoading, error, isError } = useGetPortfolios()
+  const { data: assets, isLoading: isLoadingAssets } = useGetAssets()
+
+  // Create a mapping from asset UUID to asset name
+  const assetMap = useMemo(() => {
+    if (!assets || assets.length === 0) return new Map<string, string>()
+    const map = new Map<string, string>()
+    assets.forEach((asset) => {
+      map.set(asset.id, asset.name)
+    })
+    return map
+  }, [assets])
 
   const columns = useMemo<ColumnDef<Position>[]>(
     () => [
@@ -32,9 +44,15 @@ export default function PositionsTable() {
       {
         accessorKey: 'asset',
         header: 'Asset',
-        cell: (info) => (
-          <span className="font-mono text-xs">{info.getValue() as string}</span>
-        ),
+        cell: (info) => {
+          const assetId = info.getValue() as string
+          const assetName = assetMap.get(assetId)
+          if (!assetName) {
+            console.warn(`Asset not found for ID: ${assetId}`, { assetMapSize: assetMap.size })
+            return <span className="font-mono text-xs">{assetId}</span>
+          }
+          return <span>{assetName}</span>
+        },
       },
       {
         accessorKey: 'quantity',
@@ -72,7 +90,7 @@ export default function PositionsTable() {
         },
       },
     ],
-    [],
+    [assetMap],
   )
 
   // TODO fix warning
@@ -82,7 +100,7 @@ export default function PositionsTable() {
     getCoreRowModel: getCoreRowModel(),
   })
 
-  if (isLoading) {
+  if (isLoading || isLoadingAssets) {
     return (
       <Container>
         <div className="bg-muted/40 mt-6 rounded-lg border p-6">
@@ -124,6 +142,25 @@ export default function PositionsTable() {
           aria-live="polite"
         >
           No positions data available.
+        </div>
+      </Container>
+    )
+  }
+
+  // Ensure assets are loaded before rendering
+  if (!assets || assets.length === 0) {
+    return (
+      <Container>
+        <div className="bg-muted/40 mt-6 rounded-lg border p-6">
+          <div
+            className="flex items-center justify-center gap-2 text-sm"
+            role="status"
+            aria-live="polite"
+            aria-busy="true"
+          >
+            <Loader size={20} aria-hidden="true" />
+            <span>Loading assets data…</span>
+          </div>
         </div>
       </Container>
     )

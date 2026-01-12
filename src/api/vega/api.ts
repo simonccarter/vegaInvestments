@@ -3,9 +3,10 @@
  **/
 
 import { ValidationError } from '@/api/errors/ValidationError'
+import { mockAssets } from "@/constants/assets"
 import { mockPortfolio } from "@/constants/portfolio"
 import { fetcherWithValidation } from "./fetcher"
-import { PortfolioSchema, type Portfolio } from "./schemas"
+import { AssetsSchema, PortfolioSchema, type Assets, type Portfolio } from "./schemas"
 
 export const validatedPortfolioFetcher = async (url: string) => await fetcherWithValidation(url, PortfolioSchema)
 
@@ -19,6 +20,26 @@ export const validatedHardcodedPortfolioFetcher = async (): Promise<Portfolio> =
     console.log('result.error', result.error)
     throw new ValidationError(
       'Hardcoded portfolio data validation failed',
+      result.error,
+      'hardcoded',
+    )
+  }
+
+  return result.data
+}
+
+export const validatedAssetsFetcher = async (url: string) => await fetcherWithValidation(url, AssetsSchema)
+
+/**
+ * Validates hardcoded assets data using Zod schema
+ */
+export const validatedHardcodedAssetsFetcher = async (): Promise<Assets> => {
+  const result = AssetsSchema.safeParse(mockAssets)
+
+  if (!result.success) {
+    console.log('result.error', result.error)
+    throw new ValidationError(
+      'Hardcoded assets data validation failed',
       result.error,
       'hardcoded',
     )

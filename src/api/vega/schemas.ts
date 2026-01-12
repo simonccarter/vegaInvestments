@@ -6,6 +6,8 @@ export const AssetSchema = z.object({
   type: z.enum(['stock', 'crypto', 'fiat']),
 })
 
+export const AssetsSchema = z.array(AssetSchema)
+
 export const PriceSchema = z.object({
   id: z.string().uuid(),
   asset: z.string(),
@@ -28,6 +30,7 @@ export const PortfolioSchema = z.object({
 
 // Export inferred types from schemas
 export type Asset = z.infer<typeof AssetSchema>
+export type Assets = z.infer<typeof AssetsSchema>
 export type Price = z.infer<typeof PriceSchema>
 export type Position = z.infer<typeof PositionSchema>
 export type Portfolio = z.infer<typeof PortfolioSchema>
