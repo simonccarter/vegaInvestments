@@ -30,25 +30,25 @@ function generateDeterministicUUID(seed: string): string {
 
   // Generate UUID v4 format
   // Segment 1: 8 hex digits
-  const seg1 = Math.abs(hash1).toString(16).padStart(8, '0').substring(0, 8)
+  const seg1 = hash1.toString(16).padStart(8, '0').substring(0, 8)
 
   // Segment 2: 4 hex digits
-  const seg2 = Math.abs(hash2).toString(16).padStart(4, '0').substring(0, 4)
+  const seg2 = hash2.toString(16).padStart(4, '0').substring(0, 4)
 
   // Segment 3: 4 hex digits, first must be 1-8, then '4' for version, then 2 more
   // Format: [1-8][4][0-9a-f][0-9a-f]
-  const seg3First = (Math.abs(hash3) % 8) + 1 // 1-8
-  const seg3Rest = Math.abs(hash3).toString(16).padStart(2, '0').substring(0, 2)
+  const seg3First = (hash3 % 8) + 1 // 1-8
+  const seg3Rest = hash3.toString(16).padStart(2, '0').substring(0, 2)
   const seg3 = `${seg3First}4${seg3Rest}`
 
   // Segment 4: 4 hex digits, first must be 8, 9, a, or b
   const variantChars = ['8', '9', 'a', 'b']
-  const seg4First = variantChars[Math.abs(hash4) % 4]
-  const seg4Rest = Math.abs(hash4).toString(16).padStart(3, '0').substring(0, 3)
+  const seg4First = variantChars[hash4 % 4]
+  const seg4Rest = hash4.toString(16).padStart(3, '0').substring(0, 3)
   const seg4 = `${seg4First}${seg4Rest}`
 
-  // Segment 5: 12 hex digits
-  const combinedHash = Math.abs(hash1) ^ Math.abs(hash2) ^ Math.abs(hash3) ^ Math.abs(hash4)
+  // Segment 5: 12 hex digits - combine all hashes
+  const combinedHash = (hash1 ^ hash2 ^ hash3 ^ hash4) >>> 0
   const seg5 = combinedHash.toString(16).padStart(12, '0').substring(0, 12)
 
   return `${seg1}-${seg2}-${seg3}-${seg4}-${seg5}`
