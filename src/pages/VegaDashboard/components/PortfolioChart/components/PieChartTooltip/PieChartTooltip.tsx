@@ -7,9 +7,9 @@ export function PieChartTooltip({ active, payload }: { active?: boolean; payload
     return (
       <div className="bg-background border-border rounded-lg border p-3 shadow-md">
         <p className="font-semibold">{data.name}</p>
-        <p className="text-sm text-muted-foreground">Value: £{data.value.toFixed(2)}</p>
+        <p className="text-sm text-muted-foreground">Value: ${data.value.toFixed(2)}</p>
         <p className="text-sm text-muted-foreground">Quantity: {data.quantity}</p>
-        <p className="text-sm text-muted-foreground">Price: £{data.price.toFixed(2)}</p>
+        <p className="text-sm text-muted-foreground">Price: ${data.price.toFixed(2)}</p>
       </div>
     )
   }

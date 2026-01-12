@@ -92,7 +92,7 @@ export default function PortfolioChart() {
   const chartData = transformPortfolioData(data.positions, assetMap)
   const totalValue = chartData.reduce((sum, item) => sum + item.value, 0)
 
-  const chartDescription = `Portfolio donut chart showing ${chartData.length} positions with a total value of £${totalValue.toFixed(2)}`
+  const chartDescription = `Portfolio donut chart showing ${chartData.length} positions with a total value of $${totalValue.toFixed(2)}`
 
   return (
     <Container>
@@ -134,7 +134,7 @@ export default function PortfolioChart() {
         </div>
 
         <div className="mt-4 text-sm text-muted-foreground">
-          <p>Total Portfolio Value: £{totalValue.toFixed(2)}</p>
+          <p>Total Portfolio Value: ${totalValue.toFixed(2)}</p>
           <p>As of: {new Date(data.asOf).toLocaleString()}</p>
         </div>
       </div>

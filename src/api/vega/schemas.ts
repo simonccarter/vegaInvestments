@@ -12,7 +12,10 @@ export const PriceSchema = z.object({
   id: z.string().uuid(),
   asset: z.string(),
   price: z.number().int(),
+  asOf: z.string().datetime().optional(),
 })
+
+export const HistoricalPricesSchema = z.array(PriceSchema)
 
 export const PositionSchema = z.object({
   id: z.number().int(),
@@ -32,6 +35,7 @@ export const PortfolioSchema = z.object({
 export type Asset = z.infer<typeof AssetSchema>
 export type Assets = z.infer<typeof AssetsSchema>
 export type Price = z.infer<typeof PriceSchema>
+export type HistoricalPrices = z.infer<typeof HistoricalPricesSchema>
 export type Position = z.infer<typeof PositionSchema>
 export type Portfolio = z.infer<typeof PortfolioSchema>
 

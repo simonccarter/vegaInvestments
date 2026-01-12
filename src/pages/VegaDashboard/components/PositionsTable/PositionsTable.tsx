@@ -63,9 +63,9 @@ export default function PositionsTable() {
         accessorKey: 'price',
         header: 'Price',
         cell: (info) => {
-          const priceInPence = info.getValue() as number
-          const priceInPounds = priceInPence / 100
-          return `£${priceInPounds.toFixed(2)}`
+          const priceInCents = info.getValue() as number
+          const priceInDollars = priceInCents / 100
+          return `$${priceInDollars.toFixed(2)}`
         },
       },
       {
@@ -74,7 +74,7 @@ export default function PositionsTable() {
         cell: (info) => {
           const position = info.row.original
           const totalValue = (position.quantity * position.price) / 100
-          return <span className="font-medium">£{totalValue.toFixed(2)}</span>
+          return <span className="font-medium">${totalValue.toFixed(2)}</span>
         },
       },
       {
@@ -223,7 +223,7 @@ export default function PositionsTable() {
               <TableCell colSpan={4} className="text-right">
                 Total Portfolio Value:
               </TableCell>
-              <TableCell className="text-right">£{totalValue.toFixed(2)}</TableCell>
+              <TableCell className="text-right">${totalValue.toFixed(2)}</TableCell>
               <TableCell className="text-muted-foreground">
                 {new Date(data.asOf).toLocaleString()}
               </TableCell>
