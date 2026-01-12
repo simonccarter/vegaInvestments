@@ -1,7 +1,8 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Container } from "@/components/ui/container";
+import { Card, CardContent } from "@/components/ui/card";
+import { PageContainer } from "@/components/ui/PageContainer";
 import { useLogin } from "@/hooks/useLogin";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -30,13 +31,12 @@ export function LoginPage() {
   }
 
   return (
-    <Container className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12">
-
+    <PageContainer className="flex min-h-[calc(100vh-4rem)] items-center justify-center">
       <div className="w-full max-w-md">
-
-        <div className="bg-muted/40 rounded-lg border p-6 space-y-6">
-          <h1 className="text-2xl font-semibold text-center">Login</h1>
-          <form className="space-y-4" onSubmit={handleLogin}>
+        <Card className="bg-muted/40">
+          <CardContent className="p-6 space-y-6">
+            <h1 className="text-2xl font-semibold text-center">Login</h1>
+            <form className="space-y-4" onSubmit={handleLogin}>
 
           {authError && <div className="text-red-500">{authError}</div>}
           {isLoggingIn && <Loader className="animate-spin" size={20} />}
@@ -54,8 +54,9 @@ export function LoginPage() {
             <p>Demo hardcoded details</p>
             <p>email: demo@example.com, password: 123456</p>
           </form>
-        </div>
+          </CardContent>
+        </Card>
       </div>
-    </Container>
+    </PageContainer>
   )
 }

@@ -1,8 +1,8 @@
 import { useGetPortfolios } from '@/api/vega/usePortfolios'
 import { useGetAssets } from '@/api/vega/useAssets'
 import { type Position } from '@/api/vega/schemas'
-import { Container } from '@/components/ui/container'
 import { Loader } from '@/components/ui/loader'
+import { Card, CardContent } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -102,67 +102,59 @@ export default function PositionsTable() {
 
   if (isLoading || isLoadingAssets) {
     return (
-      <Container>
-        <div className="bg-muted/40 mt-6 rounded-lg border p-6">
-          <div
-            className="flex items-center justify-center gap-2 text-sm"
-            role="status"
-            aria-live="polite"
-            aria-busy="true"
-          >
-            <Loader size={20} aria-hidden="true" />
-            <span>Loading positions data…</span>
-          </div>
-        </div>
-      </Container>
+        <Card className="bg-muted/40">
+          <CardContent className="p-6">
+            <div
+              className="flex items-center justify-center gap-2 text-sm"
+              role="status"
+              aria-live="polite"
+              aria-busy="true"
+            >
+              <Loader size={20} aria-hidden="true" />
+              <span>Loading positions data…</span>
+            </div>
+          </CardContent>
+        </Card>
     )
   }
 
   if (isError || error) {
     return (
-      <Container>
-        <div
-          className="border-destructive/20 bg-destructive/10 text-destructive mt-6 rounded-lg border p-6"
-          role="alert"
-          aria-live="assertive"
-        >
-          <div className="font-medium">Failed to load positions data</div>
-          <div className="mt-1 text-sm">{error?.message || 'An unknown error occurred'}</div>
-        </div>
-      </Container>
+        <Card className="border-destructive/20 bg-destructive/10 text-destructive mt-6">
+          <CardContent className="p-6" role="alert" aria-live="assertive">
+            <div className="font-medium">Failed to load positions data</div>
+            <div className="mt-1 text-sm">{error?.message || 'An unknown error occurred'}</div>
+          </CardContent>
+        </Card>
     )
   }
 
   if (!data || !data.positions || data.positions.length === 0) {
     return (
-      <Container>
-        <div
-          className="bg-muted/40 text-muted-foreground mt-6 rounded-lg border p-6 text-center text-sm"
-          role="status"
-          aria-live="polite"
-        >
-          No positions data available.
-        </div>
-      </Container>
+        <Card className="bg-muted/40 text-muted-foreground mt-6">
+          <CardContent className="p-6 text-center text-sm" role="status" aria-live="polite">
+            No positions data available.
+          </CardContent>
+        </Card>
     )
   }
 
   // Ensure assets are loaded before rendering
   if (!assets || assets.length === 0) {
     return (
-      <Container>
-        <div className="bg-muted/40 mt-6 rounded-lg border p-6">
-          <div
-            className="flex items-center justify-center gap-2 text-sm"
-            role="status"
-            aria-live="polite"
-            aria-busy="true"
-          >
-            <Loader size={20} aria-hidden="true" />
-            <span>Loading assets data…</span>
-          </div>
-        </div>
-      </Container>
+        <Card className="bg-muted/40 mt-6">
+          <CardContent className="p-6">
+            <div
+              className="flex items-center justify-center gap-2 text-sm"
+              role="status"
+              aria-live="polite"
+              aria-busy="true"
+            >
+              <Loader size={20} aria-hidden="true" />
+              <span>Loading assets data…</span>
+            </div>
+          </CardContent>
+        </Card>
     )
   }
 
@@ -172,66 +164,66 @@ export default function PositionsTable() {
   )
 
   return (
-    <Container>
-      <div className="bg-muted/40 mt-6 rounded-lg border p-4">
-        <h2 className="mb-4 text-lg font-semibold">Positions</h2>
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead
-                    key={header.id}
-                    className={
-                      header.id === 'quantity' ||
-                      header.id === 'price' ||
-                      header.id === 'totalValue'
-                        ? 'text-right'
-                        : 'text-left'
-                    }
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
-                  </TableHead>
-                ))}
+      <Card className="bg-muted/40">
+        <CardContent className="p-4">
+          <h2 className="mb-4 text-lg font-semibold">Positions</h2>
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableHead
+                      key={header.id}
+                      className={
+                        header.id === 'quantity' ||
+                        header.id === 'price' ||
+                        header.id === 'totalValue'
+                          ? 'text-right'
+                          : 'text-left'
+                      }
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(header.column.columnDef.header, header.getContext())}
+                    </TableHead>
+                  ))}
+                </TableRow>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows.map((row) => (
+                <TableRow key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      className={
+                        cell.column.id === 'quantity' ||
+                        cell.column.id === 'price' ||
+                        cell.column.id === 'totalValue'
+                          ? 'text-right'
+                          : 'text-left'
+                      }
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan={4} className="text-right">
+                  Total Portfolio Value:
+                </TableCell>
+                <TableCell className="text-right">${totalValue.toFixed(2)}</TableCell>
+                <TableCell className="text-muted-foreground">
+                  {new Date(data.asOf).toLocaleString()}
+                </TableCell>
               </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                    className={
-                      cell.column.id === 'quantity' ||
-                      cell.column.id === 'price' ||
-                      cell.column.id === 'totalValue'
-                        ? 'text-right'
-                        : 'text-left'
-                    }
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TableCell colSpan={4} className="text-right">
-                Total Portfolio Value:
-              </TableCell>
-              <TableCell className="text-right">${totalValue.toFixed(2)}</TableCell>
-              <TableCell className="text-muted-foreground">
-                {new Date(data.asOf).toLocaleString()}
-              </TableCell>
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </div>
-    </Container>
+            </TableFooter>
+          </Table>
+        </CardContent>
+      </Card>
   )
 }
 

@@ -2,7 +2,7 @@
 
 Run `yarn` or `npm install`
 
-Create a `.env` file with `VITE_POLYGON_API_KEY` providing your own key.
+Create a `.env` file with `VITE_VEGA_API_KEY` providing your own key.
 See `.env.example` for an example
 
 ## Running

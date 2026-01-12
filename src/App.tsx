@@ -13,7 +13,7 @@ function App() {
         Skip to main content
       </a>
       <Navbar />
-      <main id="main-content" className="mx-auto w-full max-w-7xl" tabIndex={-1}>
+      <main id="main-content" className="w-full" tabIndex={-1}>
         <AppRoutes />
       </main>
     </div>

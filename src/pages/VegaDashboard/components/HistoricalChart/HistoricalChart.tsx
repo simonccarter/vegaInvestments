@@ -1,9 +1,9 @@
 import { useGetPortfolios } from '@/api/vega/usePortfolios'
 import { useGetAssets } from '@/api/vega/useAssets'
 import { useGetPrices } from '@/api/vega/usePrices'
-import { Container } from '@/components/ui/container'
 import { Loader } from '@/components/ui/loader'
 import { DateRangePicker } from '@/components/ui/date-range-picker'
+import { Card, CardContent } from '@/components/ui/card'
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid, Legend } from 'recharts'
 import { useMemo, useState } from 'react'
 import type { DateRange } from 'react-day-picker'
@@ -94,8 +94,8 @@ export default function HistoricalChart() {
 
   if (isLoadingPortfolio || isLoadingAssets) {
     return (
-      <Container>
-        <div className="bg-muted/40 mt-6 rounded-lg border p-6">
+      <Card className="bg-muted/40 mt-6">
+        <CardContent className="p-6">
           <div
             className="flex items-center justify-center gap-2 text-sm"
             role="status"
@@ -105,99 +105,95 @@ export default function HistoricalChart() {
             <Loader size={20} aria-hidden="true" />
             <span>Loading portfolio data…</span>
           </div>
-        </div>
-      </Container>
+        </CardContent>
+      </Card>
     )
   }
 
   if (!portfolio || !portfolio.positions || portfolio.positions.length === 0) {
     return (
-      <Container>
-        <div
-          className="bg-muted/40 text-muted-foreground mt-6 rounded-lg border p-6 text-center text-sm"
-          role="status"
-          aria-live="polite"
-        >
+      <Card className="bg-muted/40 text-muted-foreground mt-6">
+        <CardContent className="p-6 text-center text-sm" role="status" aria-live="polite">
           No portfolio data available.
-        </div>
-      </Container>
+        </CardContent>
+      </Card>
     )
   }
 
   return (
-    <Container>
-      <div className="bg-muted/40 mt-6 rounded-lg border p-4">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Portfolio Historical Performance</h2>
-          <div className="w-64">
-            <DateRangePicker
-              value={dateRange}
-              onChange={setDateRange}
-              maxDate={new Date()}
-            />
-          </div>
-        </div>
-
-        {isLoadingPrices ? (
-          <div className="flex h-96 items-center justify-center">
-            <div
-              className="flex items-center justify-center gap-2 text-sm"
-              role="status"
-              aria-live="polite"
-              aria-busy="true"
-            >
-              <Loader size={20} aria-hidden="true" />
-              <span>Loading historical prices…</span>
+      <Card className="bg-muted/40">
+        <CardContent className="p-4">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Portfolio Historical Performance</h2>
+            <div className="w-64">
+              <DateRangePicker
+                value={dateRange}
+                onChange={setDateRange}
+                maxDate={new Date()}
+              />
             </div>
           </div>
-        ) : chartData.length === 0 ? (
-          <div className="flex h-96 items-center justify-center text-sm text-muted-foreground">
-            No historical data available for the selected date range.
-          </div>
-        ) : (
-          <div className="h-96" role="img" aria-label="Portfolio value over time">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="date"
-                  tickFormatter={(value) => format(new Date(value), 'MMM dd')}
-                />
-                <YAxis
-                  tickFormatter={(value) => `$${value.toLocaleString()}`}
-                />
-                <Tooltip
-                  formatter={(value: number) => [`$${value.toFixed(2)}`, 'Portfolio Value']}
-                  labelFormatter={(label) => format(new Date(label), 'MMM dd, yyyy')}
-                />
-                <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="value"
-                  stroke="#1f77b4"
-                  strokeWidth={2}
-                  dot={false}
-                  name="Portfolio Value"
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        )}
 
-        {chartData.length > 0 && (
-          <div className="mt-4 text-sm text-muted-foreground">
-            <p>
-              Value Range: ${Math.min(...chartData.map(d => d.value)).toFixed(2)} - ${Math.max(...chartData.map(d => d.value)).toFixed(2)}
-            </p>
-            {dateRange?.from && dateRange?.to && (
+          {isLoadingPrices ? (
+            <div className="flex h-96 items-center justify-center">
+              <div
+                className="flex items-center justify-center gap-2 text-sm"
+                role="status"
+                aria-live="polite"
+                aria-busy="true"
+              >
+                <Loader size={20} aria-hidden="true" />
+                <span>Loading historical prices…</span>
+              </div>
+            </div>
+          ) : chartData.length === 0 ? (
+            <div className="flex h-96 items-center justify-center text-sm text-muted-foreground">
+              No historical data available for the selected date range.
+            </div>
+          ) : (
+            <div className="h-96" role="img" aria-label="Portfolio value over time">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={chartData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey="date"
+                    tickFormatter={(value) => format(new Date(value), 'MMM dd')}
+                  />
+                  <YAxis
+                    tickFormatter={(value) => `$${value.toLocaleString()}`}
+                  />
+                  <Tooltip
+                    formatter={(value: number) => [`$${value.toFixed(2)}`, 'Portfolio Value']}
+                    labelFormatter={(label) => format(new Date(label), 'MMM dd, yyyy')}
+                  />
+                  <Legend />
+                  <Line
+                    type="monotone"
+                    dataKey="value"
+                    stroke="#1f77b4"
+                    strokeWidth={2}
+                    dot={false}
+                    name="Portfolio Value"
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          )}
+
+          {chartData.length > 0 && (
+            <div className="mt-4 text-sm text-muted-foreground">
               <p>
-                Period: {format(dateRange.from, 'MMM dd, yyyy')} to {format(dateRange.to, 'MMM dd, yyyy')}
+                Value Range: ${Math.min(...chartData.map(d => d.value)).toFixed(2)} - ${Math.max(...chartData.map(d => d.value)).toFixed(2)}
               </p>
-            )}
-          </div>
-        )}
-      </div>
-    </Container>
+              {dateRange?.from && dateRange?.to && (
+                <p>
+                  Period: {format(dateRange.from, 'MMM dd, yyyy')} to {format(dateRange.to, 'MMM dd, yyyy')}
+                </p>
+              )}
+            </div>
+          )}
+        </CardContent>
+      </Card>
   )
 }
 
