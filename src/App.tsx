@@ -1,5 +1,5 @@
 import { Navbar } from '@/components/layout/navbar'
-import { AppRoutes } from '@/routes/app-routes'
+import { AppRoutes } from '@/routes/AppRoutes'
 import './App.css'
 
 function App() {
