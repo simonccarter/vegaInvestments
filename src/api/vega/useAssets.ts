@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { validatedHardcodedAssetsFetcher, validatedAssetsFetcher } from './api'
+import { getAndValidateHardcodedAssetsFetcher, validatedAssetsFetcher } from './api'
 import { VEGA_API_URL } from './constants'
 import { type Assets } from './schemas'
 
@@ -22,7 +22,7 @@ export const useGetAssets = (options: UseGetAssetsOptions = {}) => {
     queryKey: ['assets', useHardcodedData],
     queryFn: async () => {
       if (useHardcodedData) {
-        return validatedHardcodedAssetsFetcher()
+        return getAndValidateHardcodedAssetsFetcher()
       }
       const url = buildAssetsUrl()
       return validatedAssetsFetcher(url)

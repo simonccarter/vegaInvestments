@@ -14,7 +14,7 @@ export const validatedPortfolioFetcher = async (url: string) => await fetcherWit
 /**
  * Validates hardcoded portfolio data using Zod schema
  */
-export const validatedHardcodedPortfolioFetcher = async (): Promise<Portfolio> => {
+export const getAndValidateHardcodedPortfolioFetcher = async (): Promise<Portfolio> => {
   const result = PortfolioSchema.safeParse(mockPortfolio)
 
   if (!result.success) {
@@ -34,7 +34,7 @@ export const validatedAssetsFetcher = async (url: string) => await fetcherWithVa
 /**
  * Validates hardcoded assets data using Zod schema
  */
-export const validatedHardcodedAssetsFetcher = async (): Promise<Assets> => {
+export const getAndValidateHardcodedAssetsFetcher = async (): Promise<Assets> => {
   const result = AssetsSchema.safeParse(mockAssets)
 
   if (!result.success) {
@@ -54,7 +54,7 @@ export const validatedPricesFetcher = async (url: string) => await fetcherWithVa
 /**
  * Validates hardcoded prices data using Zod schema
  */
-export const validatedHardcodedPricesFetcher = async (
+export const getAndValidateHardcodedPricesFetcher = async (
   assets: string[],
   from?: string,
   to?: string,

@@ -24,6 +24,5 @@ or
 # TODO
 
 API error Handling
-Better Zod validation handling
 Normalise some common logic into shared hooks
 Add some basic tests?

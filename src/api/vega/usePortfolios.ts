@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { validatedHardcodedPortfolioFetcher, validatedPortfolioFetcher } from './api'
+import { getAndValidateHardcodedPortfolioFetcher, validatedPortfolioFetcher } from './api'
 import { VEGA_API_URL } from './constants'
 import { type Portfolio } from './schemas'
 
@@ -22,7 +22,7 @@ export const useGetPortfolios = (options: UseGetPortfoliosOptions = {}) => {
     queryKey: ['portfolios', useHardcodedData],
     queryFn: async () => {
       if (useHardcodedData) {
-        return validatedHardcodedPortfolioFetcher()
+        return getAndValidateHardcodedPortfolioFetcher()
       }
       const url = buildPortfoliosUrl()
       return validatedPortfolioFetcher(url)
