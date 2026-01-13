@@ -1,6 +1,6 @@
 # Set-Up
 
-Run `yarn` or `npm install`
+Run `yarn`
 
 ## Environment Variables
 
@@ -25,5 +25,3 @@ If you want to use a read endpoint you can create a `.env` file. See the `.env.e
 or
 
 `yarn test`
-
-# Known Issues
