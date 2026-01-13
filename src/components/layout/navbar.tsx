@@ -1,12 +1,16 @@
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import { useLocalStorage } from '@/hooks/useLocalStorage'
+import { useLogin } from '@/hooks/useLogin'
 import { Menu } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useLogin } from '@/hooks/useLogin'
 
 export function Navbar() {
   const { logout, isLoggingOut } = useLogin()
   const navigate = useNavigate()
+
+  const { getItem } = useLocalStorage()
+  const isLoggedIn = getItem('isLoggedIn') === 'true'
 
   const handleLogout = async () => {
     await logout()
@@ -27,14 +31,16 @@ export function Navbar() {
             <Link className="hover:text-primary text-sm font-medium" to="/">
               Home
             </Link>
-            <button
-              onClick={handleLogout}
-              disabled={isLoggingOut}
-              className="hover:text-primary text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-              aria-label="Logout"
-            >
-              Logout
-            </button>
+            {isLoggedIn && (
+              <button
+                onClick={handleLogout}
+                disabled={isLoggingOut}
+                className="hover:text-primary cursor-pointer text-sm font-medium disabled:cursor-not-allowed disabled:opacity-50"
+                aria-label="Logout"
+              >
+                Logout
+              </button>
+            )}
           </nav>
         </div>
 
@@ -62,14 +68,16 @@ export function Navbar() {
                 <Link to="/" className="text-lg">
                   Home
                 </Link>
-                <button
-                  onClick={handleLogout}
-                  disabled={isLoggingOut}
-                  className="text-left text-lg hover:text-primary disabled:opacity-50 disabled:cursor-not-allowed"
-                  aria-label="Logout"
-                >
-                  Logout
-                </button>
+                {isLoggedIn && (
+                  <button
+                    onClick={handleLogout}
+                    disabled={isLoggingOut}
+                    className="hover:text-primary text-left text-lg disabled:cursor-not-allowed disabled:opacity-50"
+                    aria-label="Logout"
+                  >
+                    Logout
+                  </button>
+                )}
               </nav>
             </SheetContent>
           </Sheet>
