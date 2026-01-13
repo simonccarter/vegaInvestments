@@ -2,5 +2,5 @@
 export const VEGA_API_URL = import.meta.env.VITE_VEGA_API_URL
 export const VEGA_API_KEY = import.meta.env.VITE_VEGA_API_KEY
 
-export const USE_MOCK_DATA = typeof VEGA_API_URL === 'string' && VEGA_API_URL.trim() !== ''
+export const USE_MOCK_DATA = VEGA_API_URL?.trim() !== ''
 
