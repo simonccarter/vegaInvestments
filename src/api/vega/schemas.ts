@@ -24,7 +24,7 @@ export const PositionSchema = z.object({
   asset: z.uuid(),
   quantity: z.number().int(),
   asOf: z.iso.datetime(),
-  price: z.number().int(),
+  price: z.number().int(), // price per unit
 })
 
 export const PortfolioAPISchema = z.object({
