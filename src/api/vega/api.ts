@@ -3,9 +3,9 @@
  **/
 
 import { ValidationError } from '@/api/errors/ValidationError'
-import { mockAssets } from "@/constants/assets"
-import { mockPortfolio } from "@/constants/portfolio"
-import { generateMockHistoricalPrices } from "@/constants/prices"
+import { mockAssets } from "@/api/vega/mocks/assets"
+import { mockPortfolio } from "@/api/vega/mocks/portfolio"
+import { generateMockHistoricalPrices } from "@/api/vega/mocks/prices"
 import { fetcherWithValidation } from "./fetcher"
 import { AssetsSchema, HistoricalPricesSchema, PortfolioSchema, type Assets, type HistoricalPrices, type Portfolio } from "./schemas"
 

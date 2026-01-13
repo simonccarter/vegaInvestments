@@ -1,5 +1,5 @@
-import { mockAssets } from '@/constants/assets'
-import { mockPortfolio } from '@/constants/portfolio'
+import { mockAssets } from '@/api/vega/mocks/assets'
+import { mockPortfolio } from '@/api/vega/mocks/portfolio'
 import { type HistoricalPrices } from '@/api/vega/schemas'
 
 /**
