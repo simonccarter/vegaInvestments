@@ -2,10 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Loader } from '@/components/ui/loader'
 import { getChartPrimaryColor } from '@/constants/chartColors'
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
-import {
-  AssetTypeSelector,
-  getDisplayLabel,
-} from './components/AssetTypeSelector/AssetTypeSelector'
+import { AssetTypeSelector } from './components/AssetTypeSelector/AssetTypeSelector'
+import { getDisplayLabel } from './components/AssetTypeSelector/utils'
 import { PercentageLabel } from './components/PercentageLabel/PercentageLabel'
 import { PieChartTooltip } from './components/PieChartTooltip/PieChartTooltip'
 import { usePortfolioChart } from './usePortfolioChart'

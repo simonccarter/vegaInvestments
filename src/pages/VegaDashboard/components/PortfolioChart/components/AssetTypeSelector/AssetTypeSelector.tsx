@@ -8,16 +8,12 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { ChevronDownIcon } from 'lucide-react'
 import type { AssetTypeFilter } from '../../usePortfolioChart'
+import { getDisplayLabel } from './utils'
 
 interface AssetTypeSelectorProps {
   selectedAssetType: AssetTypeFilter
   onAssetTypeChange: (value: AssetTypeFilter) => void
   assetTypeOptions: AssetTypeFilter[]
-}
-
-export const getDisplayLabel = (type: AssetTypeFilter): string => {
-  if (type === 'all') return 'All'
-  return type.charAt(0).toUpperCase() + type.slice(1)
 }
 
 export function AssetTypeSelector({
@@ -48,4 +44,3 @@ export function AssetTypeSelector({
     </DropdownMenu>
   )
 }
-
