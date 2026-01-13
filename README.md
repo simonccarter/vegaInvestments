@@ -20,7 +20,3 @@ or
 `yarn test
 
 # Known Issues
-
-# TODO
-
-Normalise some common logic into shared hooks

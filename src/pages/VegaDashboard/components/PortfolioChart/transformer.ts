@@ -16,7 +16,6 @@ export function transformPortfolioData(
       name: assetName || position.asset,
       value,
       quantity: position.quantity,
-      // TODO mark value as cents in schema
       price: position.price / 100, // Convert cents to dollars
     }
   })

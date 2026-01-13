@@ -1,4 +1,3 @@
-// TODO use zod validate both inputs and outputs
 export const useLocalStorage = () => {
 
   const getItem = (key: string) => {

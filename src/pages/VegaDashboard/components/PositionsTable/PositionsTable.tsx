@@ -16,6 +16,7 @@ import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from '@tan
 import { useMemo } from 'react'
 
 export default function PositionsTable() {
+  'use no memo' // Required by react-table v8 https://github.com/TanStack/table/issues/5567
   const { data, isLoading, error, isError } = useGetPortfolios()
   const { data: assets, isLoading: isLoadingAssets } = useGetAssets()
 
@@ -71,7 +72,7 @@ export default function PositionsTable() {
     [assetMap],
   )
 
-  // TODO fix warning
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: data?.positions ?? [],
     columns,
