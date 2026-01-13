@@ -23,6 +23,4 @@ or
 
 # TODO
 
-API error Handling
 Normalise some common logic into shared hooks
-Add some basic tests?

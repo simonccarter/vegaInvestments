@@ -1,6 +1,11 @@
 import { mockAssets } from '@/api/vega/mocks/assets'
 import { mockPortfolio } from '@/api/vega/mocks/portfolio'
 import { type HistoricalPrices } from '@/api/vega/schemas'
+import {
+  normalizeToUTCEndOfDay,
+  parseAndNormalizeToUTCEnd,
+  parseAndNormalizeToUTCStart,
+} from '@/utils/dates'
 
 /**
  * Generates a deterministic UUID v4-like string from a seed
@@ -64,17 +69,11 @@ export function generateMockHistoricalPrices(
   to?: string,
 ): HistoricalPrices {
   const prices: HistoricalPrices = []
-  // Parse dates properly - if date string is in YYYY-MM-DD format, add time to avoid timezone issues
-  let fromDate = from
-    ? new Date(from.includes('T') ? from : `${from}T00:00:00Z`)
-    : new Date('2023-01-01T00:00:00Z')
-  let toDate = to
-    ? new Date(to.includes('T') ? to : `${to}T23:59:59Z`)
-    : new Date()
-
-  // Normalize dates to UTC start/end of day
-  fromDate = new Date(Date.UTC(fromDate.getUTCFullYear(), fromDate.getUTCMonth(), fromDate.getUTCDate(), 0, 0, 0, 0))
-  toDate = new Date(Date.UTC(toDate.getUTCFullYear(), toDate.getUTCMonth(), toDate.getUTCDate(), 23, 59, 59, 999))
+  // Parse and normalize dates to UTC start/end of day
+  const fromDate = from
+    ? parseAndNormalizeToUTCStart(from)
+    : parseAndNormalizeToUTCStart('2023-01-01')
+  const toDate = to ? parseAndNormalizeToUTCEnd(to) : normalizeToUTCEndOfDay(new Date())
 
   // Generate prices for each day in the range
   const currentDate = new Date(fromDate)

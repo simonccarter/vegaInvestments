@@ -5,7 +5,13 @@ import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@/componen
 import { DateRangePicker } from '@/components/ui/date-range-picker'
 import { Loader } from '@/components/ui/loader'
 import { getChartPrimaryColor } from '@/constants/chartColors'
-import { format, subDays } from 'date-fns'
+import {
+  formatDateForAPI,
+  formatDateForChartTick,
+  formatDateForChartTooltip,
+  formatISOStringToDateKey,
+} from '@/utils/dates'
+import { subDays } from 'date-fns'
 import { useMemo, useState } from 'react'
 import type { DateRange } from 'react-day-picker'
 import {
@@ -36,8 +42,8 @@ export default function HistoricalChart() {
   }, [portfolio])
 
   // Format dates for API (use UTC to avoid timezone issues)
-  const fromDate = dateRange?.from ? format(dateRange.from, 'yyyy-MM-dd') : undefined
-  const toDate = dateRange?.to ? format(dateRange.to, 'yyyy-MM-dd') : undefined
+  const fromDate = dateRange?.from ? formatDateForAPI(dateRange.from) : undefined
+  const toDate = dateRange?.to ? formatDateForAPI(dateRange.to) : undefined
 
   const {
     data: prices,
@@ -59,7 +65,7 @@ export default function HistoricalChart() {
     const pricesByDate = new Map<string, Map<string, number>>()
     prices.forEach((price) => {
       if (!price.asOf) return
-      const dateKey = format(new Date(price.asOf), 'yyyy-MM-dd')
+      const dateKey = formatISOStringToDateKey(price.asOf)
       if (!pricesByDate.has(dateKey)) {
         pricesByDate.set(dateKey, new Map())
       }
@@ -174,12 +180,12 @@ export default function HistoricalChart() {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
                   dataKey="date"
-                  tickFormatter={(value) => format(new Date(value), 'MMM dd')}
+                  tickFormatter={(value) => formatDateForChartTick(new Date(value))}
                 />
                 <YAxis tickFormatter={(value) => `$${value.toLocaleString()}`} />
                 <Tooltip
                   formatter={(value: number) => [`$${value.toFixed(2)}`, 'Portfolio Value']}
-                  labelFormatter={(label) => format(new Date(label), 'MMM dd, yyyy')}
+                  labelFormatter={(label) => formatDateForChartTooltip(new Date(label))}
                 />
                 <Legend />
                 <Line

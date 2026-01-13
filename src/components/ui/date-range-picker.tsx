@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
-import { format } from 'date-fns'
+import { formatDateForDisplay } from '@/utils/dates'
 import { Calendar as CalendarIcon } from 'lucide-react'
 import * as React from 'react'
 import type { DateRange, Matcher } from 'react-day-picker'
@@ -32,8 +32,8 @@ export function DateRangePicker({ value, onChange, disabled, className }: Props)
 
   const dateRangeText = range?.from
     ? range.to
-      ? `${format(range.from, 'LLL dd, y')} to ${format(range.to, 'LLL dd, y')}`
-      : `From ${format(range.from, 'LLL dd, y')}`
+      ? `${formatDateForDisplay(range.from)} to ${formatDateForDisplay(range.to)}`
+      : `From ${formatDateForDisplay(range.from)}`
     : 'No date range selected'
 
   return (
@@ -53,12 +53,12 @@ export function DateRangePicker({ value, onChange, disabled, className }: Props)
             {range?.from ? (
               range.to ? (
                 <>
-                  {format(range.from, 'LLL dd, y')}
+                  {formatDateForDisplay(range.from)}
                   {' – '}
-                  {format(range.to, 'LLL dd, y')}
+                  {formatDateForDisplay(range.to)}
                 </>
               ) : (
-                format(range.from, 'LLL dd, y')
+                formatDateForDisplay(range.from)
               )
             ) : (
               <span>Pick a date range</span>
