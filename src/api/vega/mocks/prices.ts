@@ -1,6 +1,6 @@
 import { mockAssets } from '@/api/vega/mocks/assets'
 import { mockPortfolio } from '@/api/vega/mocks/portfolio'
-import { type HistoricalPrices } from '@/api/vega/schemas'
+import { type HistoricalPricesAPI } from '@/api/vega/schemas'
 import {
   normalizeToUTCEndOfDay,
   parseAndNormalizeToUTCEnd,
@@ -67,8 +67,8 @@ export function generateMockHistoricalPrices(
   assets: string[],
   from?: string,
   to?: string,
-): HistoricalPrices {
-  const prices: HistoricalPrices = []
+): HistoricalPricesAPI {
+  const prices: HistoricalPricesAPI = []
   // Parse and normalize dates to UTC start/end of day
   const fromDate = from
     ? parseAndNormalizeToUTCStart(from)

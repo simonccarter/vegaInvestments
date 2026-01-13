@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { getAndValidateHardcodedPortfolioFetcher, validatedPortfolioFetcher } from './api'
 import { USE_MOCK_DATA, VEGA_API_URL } from './constants'
-import { type Portfolio } from './schemas'
+import { type PortfolioAPI } from './schemas'
 
 export interface UseGetPortfoliosOptions {
   /** If true, uses hardcoded mock data instead of fetching from API */
@@ -18,7 +18,7 @@ function buildPortfoliosUrl(): string {
 export const useGetPortfolios = (options: UseGetPortfoliosOptions = {}) => {
   const { useHardcodedData = USE_MOCK_DATA } = options
 
-  const query = useQuery<Portfolio>({
+  const query = useQuery<PortfolioAPI>({
     queryKey: ['portfolios', useHardcodedData],
     queryFn: async () => {
       if (useHardcodedData) {

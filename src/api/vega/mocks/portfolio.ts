@@ -1,9 +1,9 @@
-import { type Portfolio } from '@/api/vega/schemas'
+import { type PortfolioAPI } from '@/api/vega/schemas'
 
 /**
  * Mock portfolio data for development and testing
  */
-export const mockPortfolio: Portfolio = {
+export const mockPortfolio: PortfolioAPI = {
   id: '550e8400-e29b-41d4-a716-446655440000',
   asOf: '2024-01-15T10:30:00Z',
   positions: [

@@ -7,15 +7,15 @@ import { mockAssets } from "@/api/vega/mocks/assets"
 import { mockPortfolio } from "@/api/vega/mocks/portfolio"
 import { generateMockHistoricalPrices } from "@/api/vega/mocks/prices"
 import { fetcherWithValidation } from "./fetcher"
-import { AssetsSchema, HistoricalPricesSchema, PortfolioSchema, type Assets, type HistoricalPrices, type Portfolio } from "./schemas"
+import { AssetsAPISchema, HistoricalPricesAPISchema, PortfolioAPISchema, type AssetsAPI, type HistoricalPricesAPI, type PortfolioAPI } from "./schemas"
 
-export const validatedPortfolioFetcher = async (url: string) => await fetcherWithValidation(url, PortfolioSchema)
+export const validatedPortfolioFetcher = async (url: string) => await fetcherWithValidation(url, PortfolioAPISchema)
 
 /**
  * Validates hardcoded portfolio data using Zod schema
  */
-export const getAndValidateHardcodedPortfolioFetcher = async (): Promise<Portfolio> => {
-  const result = PortfolioSchema.safeParse(mockPortfolio)
+export const getAndValidateHardcodedPortfolioFetcher = async (): Promise<PortfolioAPI> => {
+  const result = PortfolioAPISchema.safeParse(mockPortfolio)
 
   if (!result.success) {
     console.log('result.error', result.error)
@@ -29,13 +29,13 @@ export const getAndValidateHardcodedPortfolioFetcher = async (): Promise<Portfol
   return result.data
 }
 
-export const validatedAssetsFetcher = async (url: string) => await fetcherWithValidation(url, AssetsSchema)
+export const validatedAssetsFetcher = async (url: string) => await fetcherWithValidation(url, AssetsAPISchema)
 
 /**
  * Validates hardcoded assets data using Zod schema
  */
-export const getAndValidateHardcodedAssetsFetcher = async (): Promise<Assets> => {
-  const result = AssetsSchema.safeParse(mockAssets)
+export const getAndValidateHardcodedAssetsFetcher = async (): Promise<AssetsAPI> => {
+  const result = AssetsAPISchema.safeParse(mockAssets)
 
   if (!result.success) {
     console.log('result.error', result.error)
@@ -49,7 +49,7 @@ export const getAndValidateHardcodedAssetsFetcher = async (): Promise<Assets> =>
   return result.data
 }
 
-export const validatedPricesFetcher = async (url: string) => await fetcherWithValidation(url, HistoricalPricesSchema)
+export const validatedPricesFetcher = async (url: string) => await fetcherWithValidation(url, HistoricalPricesAPISchema)
 
 /**
  * Validates hardcoded prices data using Zod schema
@@ -58,9 +58,9 @@ export const getAndValidateHardcodedPricesFetcher = async (
   assets: string[],
   from?: string,
   to?: string,
-): Promise<HistoricalPrices> => {
+): Promise<HistoricalPricesAPI> => {
   const prices = generateMockHistoricalPrices(assets, from, to)
-  const result = HistoricalPricesSchema.safeParse(prices)
+  const result = HistoricalPricesAPISchema.safeParse(prices)
 
   if (!result.success) {
     console.log('result.error', result.error)

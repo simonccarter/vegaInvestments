@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { getAndValidateHardcodedPricesFetcher, validatedPricesFetcher } from './api'
 import { USE_MOCK_DATA, VEGA_API_URL } from './constants'
-import { type HistoricalPrices } from './schemas'
+import { type HistoricalPricesAPI } from './schemas'
 
 export interface UseGetPricesOptions {
   /** Asset IDs to fetch prices for */
@@ -37,7 +37,7 @@ function buildPricesUrl(assets: string[], from?: string, to?: string, asOf?: str
 export const useGetPrices = (options: UseGetPricesOptions) => {
   const { assets, from, to, asOf, useHardcodedData = USE_MOCK_DATA } = options
 
-  const query = useQuery<HistoricalPrices>({
+  const query = useQuery<HistoricalPricesAPI>({
     queryKey: ['prices', assets, from, to, asOf, useHardcodedData],
     queryFn: async () => {
       if (useHardcodedData) {

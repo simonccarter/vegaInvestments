@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { getAndValidateHardcodedAssetsFetcher, validatedAssetsFetcher } from './api'
 import { USE_MOCK_DATA, VEGA_API_URL } from './constants'
-import { type Assets } from './schemas'
+import { type AssetsAPI } from './schemas'
 
 export interface UseGetAssetsOptions {
   /** If true, uses hardcoded mock data instead of fetching from API */
@@ -18,7 +18,7 @@ function buildAssetsUrl(): string {
 export const useGetAssets = (options: UseGetAssetsOptions = {}) => {
   const { useHardcodedData = USE_MOCK_DATA } = options
 
-  const query = useQuery<Assets>({
+  const query = useQuery<AssetsAPI>({
     queryKey: ['assets', useHardcodedData],
     queryFn: async () => {
       if (useHardcodedData) {
