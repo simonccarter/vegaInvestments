@@ -3,7 +3,7 @@ import { getAndValidateHardcodedPortfolioFetcher, validatedPortfolioFetcher } fr
 import { USE_MOCK_DATA, VEGA_API_URL } from './constants'
 import { type PortfolioAPI } from './schemas'
 
-export interface UseGetPortfoliosOptions {
+export interface UseGetPortfolioOptions {
   /** If true, uses hardcoded mock data instead of fetching from API */
   useHardcodedData?: boolean
 }
@@ -15,7 +15,7 @@ function buildPortfoliosUrl(): string {
   return `${VEGA_API_URL}/portfolios`
 }
 
-export const useGetPortfolios = (options: UseGetPortfoliosOptions = {}) => {
+export const useGetPortfolio = (options: UseGetPortfolioOptions = {}) => {
   const { useHardcodedData = USE_MOCK_DATA } = options
 
   const query = useQuery<PortfolioAPI>({

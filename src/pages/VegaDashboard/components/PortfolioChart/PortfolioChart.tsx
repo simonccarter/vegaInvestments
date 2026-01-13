@@ -1,70 +1,32 @@
-import { useGetAssets } from '@/api/vega/useAssets'
-import { useGetPortfolios } from '@/api/vega/usePortfolios'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Loader } from '@/components/ui/loader'
-import { getChartColors, getChartPrimaryColor } from '@/constants/chartColors'
-import { useMemo } from 'react'
+import { getChartPrimaryColor } from '@/constants/chartColors'
+import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 import {
-  Cell,
-  Legend,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-  type PieLabelRenderProps,
-} from 'recharts'
+  AssetTypeSelector,
+  getDisplayLabel,
+} from './components/AssetTypeSelector/AssetTypeSelector'
+import { PercentageLabel } from './components/PercentageLabel/PercentageLabel'
 import { PieChartTooltip } from './components/PieChartTooltip/PieChartTooltip'
-import { transformPortfolioData } from './transformer'
-
-const RADIAN = Math.PI / 180
-/**
- * https://recharts.github.io/en-US/examples/PieChartWithCustomizedLabel/
- */
-function renderCustomizedLabel({
-  cx,
-  cy,
-  midAngle,
-  innerRadius,
-  outerRadius,
-  percent,
-}: PieLabelRenderProps) {
-  if (cx == null || cy == null || innerRadius == null || outerRadius == null) {
-    return null
-  }
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5
-  const ncx = Number(cx)
-  const x = ncx + radius * Math.cos(-(midAngle ?? 0) * RADIAN)
-  const ncy = Number(cy)
-  const y = ncy + radius * Math.sin(-(midAngle ?? 0) * RADIAN)
-
-  return (
-    <text
-      x={x}
-      y={y}
-      fill="white"
-      textAnchor={x > ncx ? 'start' : 'end'}
-      dominantBaseline="central"
-    >
-      {`${((percent ?? 1) * 100).toFixed(0)}%`}
-    </text>
-  )
-}
+import { usePortfolioChart } from './usePortfolioChart'
 
 export default function PortfolioChart() {
-  const { data, isLoading, error, isError } = useGetPortfolios()
-  const { data: assets, isLoading: isLoadingAssets } = useGetAssets()
+  const {
+    assets,
+    assetTypeOptions,
+    chartColors,
+    chartData,
+    chartDescription,
+    portfolio,
+    error,
+    isError,
+    isLoading,
+    selectedAssetType,
+    setSelectedAssetType,
+    totalValue,
+  } = usePortfolioChart()
 
-  // Create a mapping from asset UUID to asset name
-  const assetMap = useMemo(() => {
-    if (!assets || assets.length === 0) return new Map<string, string>()
-    const map = new Map<string, string>()
-    assets.forEach((asset) => {
-      map.set(asset.id, asset.name)
-    })
-    return map
-  }, [assets])
-
-  if (isLoading || isLoadingAssets) {
+  if (isLoading) {
     return (
       <Card className="bg-muted/40 mt-6">
         <CardContent className="p-6">
@@ -93,7 +55,7 @@ export default function PortfolioChart() {
     )
   }
 
-  if (!data || !data.positions || data.positions.length === 0) {
+  if (!portfolio || !portfolio.positions || portfolio.positions.length === 0) {
     return (
       <Card className="bg-muted/40 text-muted-foreground mt-6">
         <CardContent className="p-6 text-center text-sm" role="status" aria-live="polite">
@@ -122,15 +84,15 @@ export default function PortfolioChart() {
     )
   }
 
-  const chartData = transformPortfolioData(data.positions, assetMap)
-  const totalValue = chartData.reduce((sum, item) => sum + item.value, 0)
-  const chartColors = getChartColors()
-  const chartDescription = `Portfolio donut chart showing ${chartData.length} positions with a total value of $${totalValue.toFixed(2)}`
-
   return (
     <Card className="bg-muted/40">
-      <CardHeader className="flex min-h-[36px] items-center justify-start sm:justify-start">
+      <CardHeader className="flex min-h-[36px] items-center justify-between sm:justify-between">
         <CardTitle>Portfolio</CardTitle>
+        <AssetTypeSelector
+          selectedAssetType={selectedAssetType}
+          onAssetTypeChange={setSelectedAssetType}
+          assetTypeOptions={assetTypeOptions}
+        />
       </CardHeader>
       <CardContent className="p-4">
         <div className="sr-only" id="chart-description">
@@ -153,16 +115,26 @@ export default function PortfolioChart() {
                 outerRadius={120}
                 fill={getChartPrimaryColor()}
                 dataKey="value"
-                label={renderCustomizedLabel}
+                label={PercentageLabel}
               >
                 {chartData.map((entry, index) => (
                   <Cell key={`cell-${entry.id}`} fill={chartColors[index % chartColors.length]} />
                 ))}
               </Pie>
-              <Tooltip content={<PieChartTooltip />} />
+              <Tooltip content={<PieChartTooltip totalValue={totalValue} />} />
               <Legend />
             </PieChart>
           </ResponsiveContainer>
+          <div className="text-muted-foreground text-center text-sm font-medium">
+            Total: $
+            {totalValue.toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+            {selectedAssetType !== 'all' && (
+              <span className="ml-1 text-xs">({getDisplayLabel(selectedAssetType)})</span>
+            )}
+          </div>
         </div>
       </CardContent>
     </Card>

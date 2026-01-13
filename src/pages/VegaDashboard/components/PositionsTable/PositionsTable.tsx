@@ -1,6 +1,4 @@
 import { type Position } from '@/api/vega/schemas'
-import { useGetAssets } from '@/api/vega/useAssets'
-import { useGetPortfolios } from '@/api/vega/usePortfolios'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Loader } from '@/components/ui/loader'
 import {
@@ -14,21 +12,11 @@ import {
 } from '@/components/ui/table'
 import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from '@tanstack/react-table'
 import { useMemo } from 'react'
+import { usePositionsTable } from './usePositionsTable'
 
 export default function PositionsTable() {
   'use no memo' // Required by react-table v8 https://github.com/TanStack/table/issues/5567
-  const { data, isLoading, error, isError } = useGetPortfolios()
-  const { data: assets, isLoading: isLoadingAssets } = useGetAssets()
-
-  // Create a mapping from asset UUID to asset name
-  const assetMap = useMemo(() => {
-    if (!assets || assets.length === 0) return new Map<string, string>()
-    const map = new Map<string, string>()
-    assets.forEach((asset) => {
-      map.set(asset.id, asset.name)
-    })
-    return map
-  }, [assets])
+  const { portfolio, error, isError, isLoading, assets, totalValue, assetMap } = usePositionsTable()
 
   const columns = useMemo<ColumnDef<Position>[]>(
     () => [
@@ -74,14 +62,14 @@ export default function PositionsTable() {
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
-    data: data?.positions ?? [],
+    data: portfolio?.positions ?? [],
     columns,
     getCoreRowModel: getCoreRowModel(),
   })
 
-  if (isLoading || isLoadingAssets) {
+  if (isLoading) {
     return (
-      <Card className="bg-muted/40">
+      <Card className="bg-muted/40 mt-6">
         <CardContent className="p-6">
           <div
             className="flex items-center justify-center gap-2 text-sm"
@@ -108,7 +96,7 @@ export default function PositionsTable() {
     )
   }
 
-  if (!data || !data.positions || data.positions.length === 0) {
+  if (!portfolio || !portfolio.positions || portfolio.positions.length === 0) {
     return (
       <Card className="bg-muted/40 text-muted-foreground mt-6">
         <CardContent className="p-6 text-center text-sm" role="status" aria-live="polite">
@@ -136,11 +124,6 @@ export default function PositionsTable() {
       </Card>
     )
   }
-
-  const totalValue = data.positions.reduce(
-    (sum, position) => sum + (position.quantity * position.price) / 100,
-    0,
-  )
 
   return (
     <Card className="bg-muted/40">
