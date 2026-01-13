@@ -2,10 +2,17 @@
 
 Run `yarn` or `npm install`
 
-No API is used
+## Environment Variables
 
-Create a `.env` file with `VITE_VEGA_API_KEY` providing your own key.
-See `.env.example` for an example
+The app by default uses mock data.
+
+If you want to use a read endpoint you can create a `.env` file. See the `.env.example` file for an example.
+
+**Automatic Behavior:**
+
+- If `VITE_VEGA_API_URL` is set to a non-empty value, the app will automatically use real API calls
+
+- If `VITE_VEGA_API_URL` is not set or is empty, the app will use hardcoded mock data
 
 ## Running
 
@@ -17,6 +24,6 @@ See `.env.example` for an example
 
 or
 
-`yarn test
+`yarn test`
 
 # Known Issues

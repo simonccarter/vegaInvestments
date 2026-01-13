@@ -2,12 +2,18 @@ import { HttpError } from '@/api/errors/HttpError'
 import { ValidationError } from '@/api/errors/ValidationError'
 import { z } from 'zod'
 
+import { VEGA_API_KEY } from './constants'
+
 async function fetcher<T = unknown>(url: string): Promise<T> {
-  const res = await fetch(url, {
-    headers: {
-      'Content-Type': 'application/json',
-    }
-  })
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  }
+
+  if (VEGA_API_KEY) {
+    headers['Authorization'] = `Bearer ${VEGA_API_KEY}`
+  }
+
+  const res = await fetch(url, { headers})
 
   if (!res.ok) {
     throw new HttpError(
@@ -26,6 +32,8 @@ export async function fetcherWithValidation<TSchema extends z.ZodTypeAny>(
   url: string,
   schema: TSchema,
 ): Promise<z.infer<TSchema>> {
+
+
   const data = await fetcher<unknown>(url)
 
   const result = schema.safeParse(data)

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { getAndValidateHardcodedPricesFetcher, validatedPricesFetcher } from './api'
-import { VEGA_API_URL } from './constants'
+import { USE_MOCK_DATA, VEGA_API_URL } from './constants'
 import { type HistoricalPrices } from './schemas'
 
 export interface UseGetPricesOptions {
@@ -35,7 +35,7 @@ function buildPricesUrl(assets: string[], from?: string, to?: string, asOf?: str
 }
 
 export const useGetPrices = (options: UseGetPricesOptions) => {
-  const { assets, from, to, asOf, useHardcodedData = true } = options
+  const { assets, from, to, asOf, useHardcodedData = USE_MOCK_DATA } = options
 
   const query = useQuery<HistoricalPrices>({
     queryKey: ['prices', assets, from, to, asOf, useHardcodedData],

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { getAndValidateHardcodedAssetsFetcher, validatedAssetsFetcher } from './api'
-import { VEGA_API_URL } from './constants'
+import { USE_MOCK_DATA, VEGA_API_URL } from './constants'
 import { type Assets } from './schemas'
 
 export interface UseGetAssetsOptions {
@@ -16,7 +16,7 @@ function buildAssetsUrl(): string {
 }
 
 export const useGetAssets = (options: UseGetAssetsOptions = {}) => {
-  const { useHardcodedData = true } = options
+  const { useHardcodedData = USE_MOCK_DATA } = options
 
   const query = useQuery<Assets>({
     queryKey: ['assets', useHardcodedData],
