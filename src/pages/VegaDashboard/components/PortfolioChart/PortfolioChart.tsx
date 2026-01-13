@@ -6,8 +6,7 @@ import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recha
 import { transformPortfolioData } from './transformer'
 import { PieChartTooltip } from './components/PieChartTooltip/PieChartTooltip'
 import { useMemo } from 'react'
-
-const COLORS = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f']
+import { getChartColors, getChartPrimaryColor } from '@/constants/chartColors'
 
 export default function PortfolioChart() {
   const { data, isLoading, error, isError } = useGetPortfolios()
@@ -83,6 +82,7 @@ export default function PortfolioChart() {
 
   const chartData = transformPortfolioData(data.positions, assetMap)
   const totalValue = chartData.reduce((sum, item) => sum + item.value, 0)
+  const chartColors = getChartColors()
 
   const chartDescription = `Portfolio donut chart showing ${chartData.length} positions with a total value of $${totalValue.toFixed(2)}`
 
@@ -114,11 +114,11 @@ export default function PortfolioChart() {
                     return `${name}: ${(percent * 100).toFixed(0)}%`
                   }}
                   outerRadius={120}
-                  fill="#8884d8"
+                  fill={getChartPrimaryColor()}
                   dataKey="value"
                 >
                   {chartData.map((entry, index) => (
-                    <Cell key={`cell-${entry.id}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell key={`cell-${entry.id}`} fill={chartColors[index % chartColors.length]} />
                   ))}
                 </Pie>
                 <Tooltip content={<PieChartTooltip />} />

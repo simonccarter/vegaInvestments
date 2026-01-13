@@ -8,6 +8,7 @@ import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianG
 import { useMemo, useState } from 'react'
 import type { DateRange } from 'react-day-picker'
 import { format, subDays } from 'date-fns'
+import { getChartPrimaryColor } from '@/constants/chartColors'
 
 export default function HistoricalChart() {
   const { data: portfolio, isLoading: isLoadingPortfolio } = useGetPortfolios()
@@ -172,7 +173,7 @@ export default function HistoricalChart() {
                   <Line
                     type="monotone"
                     dataKey="value"
-                    stroke="#1f77b4"
+                    stroke={getChartPrimaryColor()}
                     strokeWidth={2}
                     dot={false}
                     name="Portfolio Value"
